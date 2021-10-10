@@ -45,26 +45,8 @@ tests = [
     'expected': [('PORTC',0x04), ('PORTB', 0x01)],
     },
 
-    #-------------------------------------------------------------- 
-    # to lock
-
-    {'description': 'hold pound',
-    'steps': [  {'inputs': [('PINA',0x04)], 'iterations': 1 }, ],
-    'expected': [('PORTC',0x05), ('PORTB', 0x01)],
-    },
-
-    {'description': 'release pound',
-    'steps': [  {'inputs': [('PINA',0x00)], 'iterations': 1 }, ],
-    'expected': [('PORTC',0x06), ('PORTB', 0x01)],
-    },
-
-    {'description': 'hold y',
-    'steps': [  {'inputs': [('PINA',0x02)], 'iterations': 1 }, ],
-    'expected': [('PORTC',0x07), ('PORTB', 0x00)],
-    },
-
-    {'description': 'should be back to start',
-    'steps': [  {'inputs': [('PINA',0x00)], 'iterations': 1 }, ],
+    {'description': 'reset to start',
+    'steps': [  {'inputs': [('PINA',0x80)], 'iterations': 1 }, ],
     'expected': [('PORTC',0x00), ('PORTB', 0x00)],
     },
 

@@ -22,11 +22,9 @@
 #define LOCKED 0x00
 #define UNLOCKED 0x01
 
-#define A7 0x80
-
 void tick();
 
-enum states { start, pound, pound_rel, y, complete, pound_, pound_rel_, y_};
+enum states { start, pound, pound_rel, pound_y, complete};
 enum states state = start;
 
 int main(void) {
@@ -49,43 +47,24 @@ void tick() {
             if (PINA == POUND) state = pound;
             else state = start;
             break;
-        case pound: // hold #
+        case pound:
             if (PINA == POUND) state = pound;
             else if (PINA == 0x00) state = pound_rel;
             else state = start;
             break;
-        case pound_rel: // release #
+        case pound_rel:
             if (PINA == 0x00) state = pound_rel;
-            else if (PINA == Y) state = y;
+            else if (PINA == Y) state = pound_y;
             else state = start;
             break;
-        case y: // hold Y
-            if (PINA == Y) state = y;
+        case pound_y:
+            if (PINA == Y) state = pound_y;
             else state = complete;
             break;
-        case complete: //release Y
+        case complete:
             if (PINA == 0x00) state = complete;
-            else if (PINA == POUND) state = pound_;
-            else if (PINA == A7) state = start;
+            else state = start;
             break;
-        case pound_: //hold #
-            if (PINA == POUND) state = pound_;
-            else if (PINA == 0x00) state = pound_rel_;
-            else if (PINA == A7) state = start;
-            else state = complete;
-            break;
-        case pound_rel_: //release #
-            if (PINA == 0x00) state = pound_rel_;
-            else if (PINA == Y) state = y_;
-            else if (PINA == A7) state = start;
-            else state = complete;
-            break;
-        case y_: //hold Y
-            if (PINA == Y) state = y_;
-            else if (PINA == 0x00) state = start;
-            else if (PINA == A7) state = start;
-            break;
-
     }
 
     PORTC = state;
@@ -94,10 +73,7 @@ void tick() {
         case start: PORTB = LOCKED; break;
         case pound: PORTB = LOCKED; break;
         case pound_rel: PORTB = LOCKED; break;
-        case y: PORTB = UNLOCKED; break;
+        case pound_y: PORTB = UNLOCKED; break;
         case complete: PORTB = UNLOCKED; break;
-        case pound_: PORTB = UNLOCKED; break;
-        case pound_rel_: PORTB = UNLOCKED; break;
-        case y_: PORTB = LOCKED; break;
     }
 }
