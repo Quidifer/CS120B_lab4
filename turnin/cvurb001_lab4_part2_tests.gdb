@@ -1,4 +1,4 @@
-# Test file for "Lab4_stateMachines"
+# Test file for "Bit Manipulation"
 
 
 # commands.gdb provides the following functions for ease:
@@ -26,25 +26,90 @@
 echo ======================================================\n
 echo Running all tests..."\n\n
 
-# Example test:
-test "PINA: 0x00, PINB: 0x00 => PORTC: 0"
-# Set inputs
+#---------------
+test "start"
 setPINA 0x00
-setPINB 0x00
-# Continue for several ticks
 continue 2
-# Set expect values
-expectPORTC 0
-# Check pass/fail
+expectPORTB 0x01
 checkResult
 
-# Add tests below
-test "init"
+#-----------
+test "start"
 setPINA 0x00
-continue 1
-expectPORTC 0x00
-expectPORTB 0x00
+continue 2
+expectPORTC 0x07
 checkResult
+
+#---------------
+test "press and hold A1"
+setPINA 0x02
+continue 2
+expectPORTC 0x06
+checkResult
+
+#--------------
+test "press and hold A0"
+setPINA 0x01
+continue 2
+expectPORTC 0x07
+checkResult
+
+#-----------------
+test "press and hold A0"
+setPINA 0x00
+continue 2
+setPINA 0x01
+continue 2
+expectPORTC 0x08
+checkResult
+
+#--------------------
+test "reset, then rest"
+setPINA 0x03
+continue 2
+setPINA 0x00
+continue 2
+expectPORTC 0x07
+checkResult
+
+#---------------------
+test "increase by 3, but expect 9"
+setPINA 0x00 
+continue 2 
+setPINA 0x01
+continue 2
+setPINA 0x00 
+continue 2 
+setPINA 0x01
+continue 2
+setPINA 0x00 
+continue 2 
+setPINA 0x01
+continue 2
+expectPORTC 0x09
+checkResult
+
+#----------------------
+test "increase by 3 after reset"
+setPINA 0x03
+continue 2
+setPINA 0x00
+continue 2
+setPINA 0x01
+continue 2
+setPINA 0x00
+continue 2
+setPINA 0x01
+continue 2
+setPINA 0x00
+continue 2
+setPINA 0x01
+continue 2
+expectPORTC 0x03
+checkResult
+
+
+
 
 
 

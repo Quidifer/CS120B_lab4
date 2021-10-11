@@ -1,4 +1,4 @@
-# Test file for "Lab4_stateMachines"
+# Test file for "Bit Manipulation"
 
 
 # commands.gdb provides the following functions for ease:
@@ -26,22 +26,85 @@
 echo ======================================================\n
 echo Running all tests..."\n\n
 
-# Example test:
-test "PINA: 0x00, PINB: 0x00 => PORTC: 0"
-# Set inputs
-setPINA 0x00
-setPINB 0x00
-# Continue for several ticks
-continue 2
-# Set expect values
-expectPORTC 0
-# Check pass/fail
-checkResult
-
-# Add tests below
+#------------------
 test "init"
 setPINA 0x00
-continue 1
+continue 2
+expectPORTC 0x00
+expectPORTB 0x00
+checkResult
+
+#-----------------
+test "first state in sequence"
+setPINA 0x04
+continue 2
+expectPORTC 0x01
+expectPORTB 0x00
+checkResult
+
+#-------------------
+test "release button"
+setPINA 0x00
+continue 2
+expectPORTC 0x02
+expectPORTB 0x00
+checkResult
+
+#-----------------
+test "second state in sequence"
+setPINA 0x02
+continue 2
+expectPORTC 0x03
+expectPORTB 0x01
+checkResult
+
+#------------------
+test "hold second state"
+setPINA 0x02
+continue 2
+expectPORTC 0x03
+expectPORTB 0x01
+checkResult
+
+#-------------------
+test "hold completed state after button release"
+setPINA 0x00
+continue 2 
+expectPORTC 0x04
+expectPORTB 0x01
+checkResult
+
+#-------------------------------------------------------------
+#to lock
+
+#-------------------
+test "hold pound"
+setPINA 0x04
+continue 2
+expectPORTC 0x05
+expectPORTB 0x01
+checkResult
+
+#-------------------
+test "release pound"
+setPINA 0x00
+continue 2
+expectPORTC 0x06
+expectPORTB 0x01
+checkResult
+
+#--------------------
+test "hold y"
+setPINA 0x02
+continue 2 
+expectPORTC 0x07
+expectPORTB 0x00
+checkResult
+
+#--------------------
+test "should be back to the start"
+setPINA 0x00
+continue 2 
 expectPORTC 0x00
 expectPORTB 0x00
 checkResult
